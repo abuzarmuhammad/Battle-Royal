@@ -578,8 +578,6 @@ public class LTDescr
 	}
 
 
-	#if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_0_1 && !UNITY_4_1 && !UNITY_4_2 && !UNITY_4_3 && !UNITY_4_5
-
 	public LTDescr setImageColor(){
 		this.type = TweenAction.IMAGE_COLOR;
 		this.initInternal = ()=>{
@@ -595,11 +593,13 @@ public class LTDescr
 				this._optional.onUpdateColor(toColor);
 
 			if(this.useRecursion && trans.childCount>0)
-				textColorRecursive(this.trans, toColor);
+				imageColorRecursive(this.trans, toColor);
 		};
 		return this;
 	}
 	
+	#if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_0_1 && !UNITY_4_1 && !UNITY_4_2 && !UNITY_4_3 && !UNITY_4_5
+
 	public LTDescr setTextColor(){
 		this.type = TweenAction.TEXT_COLOR;
 		this.initInternal = ()=>{
@@ -1181,6 +1181,18 @@ public class LTDescr
 		}
 	}
 
+	private static void imageColorRecursive(Transform trans, Color toColor ){
+		if(trans.childCount>0){
+			foreach (Transform child in trans) {
+				UnityEngine.UI.Image uiImage = child.GetComponent<UnityEngine.UI.Image>();
+				if(uiImage!=null){
+					uiImage.color = toColor;
+				}
+				imageColorRecursive(child, toColor);
+			}
+		}
+	}
+	
 	private static void textColorRecursive(Transform trans, Color toColor ){
 		if(trans.childCount>0){
 			foreach (Transform child in trans) {

@@ -502,7 +502,7 @@ namespace JUTPS.VehicleSystem
 				return;
 
 			// Update properties
-			Velocity = RigidBody.velocity;
+			Velocity = RigidBody.linearVelocity;
 			LocalVelocity = transform.InverseTransformDirection(Velocity);
 			CurrentSteerVsSpeed = Mathf.Clamp01(SteerVsSpeed.Evaluate(Mathf.Abs(ForwardSpeed)));
 

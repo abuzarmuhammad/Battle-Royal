@@ -102,9 +102,9 @@ namespace Mirror.Examples.AutoLANClientController
         /// <para>Clients that connect to this server will automatically switch to this scene. This is called automatically if onlineScene or offlineScene are set, but it can be called from user code to switch scenes again while the game is in progress. This automatically sets clients to be not-ready. The clients must call NetworkClient.Ready() again to participate in the new scene.</para>
         /// </summary>
         /// <param name="newSceneName"></param>
-        public override void ServerChangeScene(string newSceneName)
+        public override void ServerChangeScene(string newSceneName,string matchID = "")
         {
-            base.ServerChangeScene(newSceneName);
+            base.ServerChangeScene(newSceneName,"");
             //UnityEngine.Debug.Log("ServerChangeScene");
         }
 
@@ -113,7 +113,7 @@ namespace Mirror.Examples.AutoLANClientController
         /// <para>This allows server to do work / cleanup / prep before the scene changes.</para>
         /// </summary>
         /// <param name="newSceneName">Name of the scene that's about to be loaded</param>
-        public override void OnServerChangeScene(string newSceneName)
+        public override void OnServerChangeScene(string newSceneName,string matchID = "")
         {
             //UnityEngine.Debug.Log("OnServerChangeScene");
         }

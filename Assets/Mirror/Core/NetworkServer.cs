@@ -1461,6 +1461,7 @@ namespace Mirror
             if (!active)
                 return false;
 
+            Debug.LogWarning("Server STarted");
             // find all NetworkIdentities in the scene.
             // all of them are disabled because of NetworkScenePostProcess.
             NetworkIdentity[] identities = Resources.FindObjectsOfTypeAll<NetworkIdentity>();
@@ -1480,6 +1481,7 @@ namespace Mirror
                 {
                     // Debug.Log($"SpawnObjects sceneId:{identity.sceneId:X} name:{identity.gameObject.name}");
                     identity.gameObject.SetActive(true);
+                    UnityEngine.Debug.LogWarning("Setting Active " + identity.gameObject.name);
                 }
             }
 

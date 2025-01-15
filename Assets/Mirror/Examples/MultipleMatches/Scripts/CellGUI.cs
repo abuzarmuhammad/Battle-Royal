@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
+using Mirror.Examples.MultipleMatch;
 
-namespace Mirror.Examples.MultipleMatch
-{
+// namespace Mirror.Examples.MultipleMatch
+// {
     public class CellGUI : MonoBehaviour
     {
         public MatchController matchController;
-        public CellValue cellValue;
+        //public CellValue cellValue;
 
         [Header("GUI References")]
         public Image image;
@@ -17,14 +19,14 @@ namespace Mirror.Examples.MultipleMatch
 
         public void Awake()
         {
-            matchController.MatchCells.Add(cellValue, this);
+            //matchController.MatchCells.Add(cellValue, this);
         }
 
         [ClientCallback]
         public void MakePlay()
         {
-            if (matchController.currentPlayer.isLocalPlayer)
-                matchController.CmdMakePlay(cellValue);
+            // if (matchController.currentPlayer.isLocalPlayer)
+            //     matchController.CmdMakePlay(cellValue);
         }
 
         [ClientCallback]
@@ -44,4 +46,4 @@ namespace Mirror.Examples.MultipleMatch
             }
         }
     }
-}
+// }

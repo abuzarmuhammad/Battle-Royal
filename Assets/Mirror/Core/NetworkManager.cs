@@ -353,7 +353,7 @@ namespace Mirror
             // scene change needed? then change scene and spawn afterwards.
             if (IsServerOnlineSceneChangeNeeded())
             {
-                ServerChangeScene(onlineScene);
+                //ServerChangeScene(onlineScene);
             }
             // otherwise spawn directly
             else
@@ -401,14 +401,14 @@ namespace Mirror
             mode = NetworkManagerMode.ClientOnly;
 
             SetupClient();
-
+            Debug.LogWarning("Client Setup Completed");
             // In case this is a headless client...
             ConfigureHeadlessFrameRate();
 
             RegisterClientMessages();
 
             NetworkClient.Connect(networkAddress);
-
+            Debug.LogWarning("Connected With Server");
             OnStartClient();
         }
 
@@ -478,7 +478,7 @@ namespace Mirror
             {
                 // call FinishStartHost after changing scene.
                 finishStartHostPending = true;
-                ServerChangeScene(onlineScene);
+                //ServerChangeScene(onlineScene);
             }
             // otherwise call FinishStartHost directly
             else
@@ -601,7 +601,7 @@ namespace Mirror
 
             if (!string.IsNullOrWhiteSpace(offlineScene))
             {
-                ServerChangeScene(offlineScene);
+                //ServerChangeScene(offlineScene);
             }
 
             startPositionIndex = 0;
@@ -796,7 +796,7 @@ namespace Mirror
         // can be called from user code to switch scenes again while the game is
         // in progress. This automatically sets clients to be not-ready during
         // the change and ready again to participate in the new scene.
-        public virtual void ServerChangeScene(string newSceneName)
+        public virtual void ServerChangeScene(string newSceneName,string _matchID)
         {
             if (string.IsNullOrWhiteSpace(newSceneName))
             {
@@ -823,7 +823,7 @@ namespace Mirror
             networkSceneName = newSceneName;
 
             // Let server prepare for scene change
-            OnServerChangeScene(newSceneName);
+            OnServerChangeScene(newSceneName,_matchID);
 
             // set server flag to stop processing messages while changing scenes
             // it will be re-enabled in FinishLoadScene.
@@ -841,7 +841,7 @@ namespace Mirror
                     sceneName = newSceneName
                 });
             }
-
+            
             startPositionIndex = 0;
             startPositions.Clear();
         }
@@ -1352,6 +1352,8 @@ namespace Mirror
                 ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
                 : Instantiate(playerPrefab);
 
+            Debug.LogWarning("Spawning Player");
+            
             // instantiating a "Player" prefab gives it the name "Player(clone)"
             // => appending the connectionId is WAY more useful for debugging!
             player.name = $"{playerPrefab.name} [connId={conn.connectionId}]";
@@ -1365,7 +1367,7 @@ namespace Mirror
         public virtual void OnServerTransportException(NetworkConnectionToClient conn, Exception exception) { }
 
         /// <summary>Called from ServerChangeScene immediately before SceneManager.LoadSceneAsync is executed</summary>
-        public virtual void OnServerChangeScene(string newSceneName) { }
+        public virtual void OnServerChangeScene(string newSceneName,string _matchID = "") { }
 
         /// <summary>Called on server after a scene load with ServerChangeScene() is completed.</summary>
         public virtual void OnServerSceneChanged(string sceneName) { }

@@ -121,7 +121,7 @@ namespace JUTPS.CoverSystem
             {
                 switchingCoverProgression = Mathf.Lerp(switchingCoverProgression, 2, 2*SneakSpeed * Time.deltaTime);
                 transform.position = Vector3.Lerp(oldCharacterPosition, targetPosition, switchingCoverProgression);
-                rb.velocity = Vector3.zero;
+                rb.linearVelocity = Vector3.zero;
                 TPSCharacter.VelocityMultiplier = 1;
 
                 if (switchingCoverProgression >= 1)
@@ -205,7 +205,7 @@ namespace JUTPS.CoverSystem
             if (IsCovering)
             {
                 TPSCharacter.VelocityMultiplier = Mathf.Clamp(TPSCharacter.VelocityMultiplier, 0, 0.8f);
-                TPSCharacter.rb.velocity = Vector3.zero;
+                TPSCharacter.rb.linearVelocity = Vector3.zero;
                 TPSCharacter.IsSprinting = false;
 
                 Quaternion desiredRotation = Quaternion.LookRotation(-CurrentCoverTrigger.transform.forward, TPSCharacter.UpDirection == Vector3.zero ? Vector3.up : TPSCharacter.UpDirection);

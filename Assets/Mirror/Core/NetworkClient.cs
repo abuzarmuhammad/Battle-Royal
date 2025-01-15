@@ -201,6 +201,7 @@ namespace Mirror
 
             AddTransportHandlers();
             connectState = ConnectState.Connecting;
+            Debug.LogWarning("Connecting To Server");
             Transport.active.ClientConnect(address);
             connection = new NetworkConnectionToServer();
         }

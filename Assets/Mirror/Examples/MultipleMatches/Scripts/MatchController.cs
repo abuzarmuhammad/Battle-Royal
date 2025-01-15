@@ -9,9 +9,9 @@ namespace Mirror.Examples.MultipleMatch
     public class MatchController : NetworkBehaviour
     {
         internal readonly SyncDictionary<NetworkIdentity, MatchPlayerData> matchPlayerData = new SyncDictionary<NetworkIdentity, MatchPlayerData>();
-        internal readonly Dictionary<CellValue, CellGUI> MatchCells = new Dictionary<CellValue, CellGUI>();
+        //internal readonly Dictionary<CellValue, CellGUI> MatchCells = new Dictionary<CellValue, CellGUI>();
 
-        CellValue boardScore = CellValue.None;
+        //CellValue boardScore = CellValue.None;
         bool playAgain = false;
 
         [Header("GUI References")]
@@ -93,75 +93,75 @@ namespace Mirror.Examples.MultipleMatch
         }
 
         [Command(requiresAuthority = false)]
-        public void CmdMakePlay(CellValue cellValue, NetworkConnectionToClient sender = null)
-        {
-            // If wrong player or cell already taken, ignore
-            if (sender.identity != currentPlayer || MatchCells[cellValue].playerIdentity != null)
-                return;
-
-            MatchCells[cellValue].playerIdentity = currentPlayer;
-            RpcUpdateCell(cellValue, currentPlayer);
-
-            MatchPlayerData mpd = matchPlayerData[currentPlayer];
-            mpd.currentScore = mpd.currentScore | cellValue;
-            matchPlayerData[currentPlayer] = mpd;
-
-            boardScore |= cellValue;
-
-            if (CheckWinner(mpd.currentScore))
-            {
-                mpd.wins += 1;
-                matchPlayerData[currentPlayer] = mpd;
-                RpcShowWinner(currentPlayer);
-                currentPlayer = null;
-            }
-            else if (boardScore == CellValue.Full)
-            {
-                RpcShowWinner(null);
-                currentPlayer = null;
-            }
-            else
-            {
-                // Set currentPlayer SyncVar so clients know whose turn it is
-                currentPlayer = currentPlayer == player1 ? player2 : player1;
-            }
-
-        }
+        // public void CmdMakePlay(CellValue cellValue, NetworkConnectionToClient sender = null)
+        // {
+        //     // If wrong player or cell already taken, ignore
+        //     if (sender.identity != currentPlayer || MatchCells[cellValue].playerIdentity != null)
+        //         return;
+        //
+        //     MatchCells[cellValue].playerIdentity = currentPlayer;
+        //     RpcUpdateCell(cellValue, currentPlayer);
+        //
+        //     MatchPlayerData mpd = matchPlayerData[currentPlayer];
+        //     mpd.currentScore = mpd.currentScore | cellValue;
+        //     matchPlayerData[currentPlayer] = mpd;
+        //
+        //     boardScore |= cellValue;
+        //
+        //     if (CheckWinner(mpd.currentScore))
+        //     {
+        //         mpd.wins += 1;
+        //         matchPlayerData[currentPlayer] = mpd;
+        //         RpcShowWinner(currentPlayer);
+        //         currentPlayer = null;
+        //     }
+        //     else if (boardScore == CellValue.Full)
+        //     {
+        //         RpcShowWinner(null);
+        //         currentPlayer = null;
+        //     }
+        //     else
+        //     {
+        //         // Set currentPlayer SyncVar so clients know whose turn it is
+        //         currentPlayer = currentPlayer == player1 ? player2 : player1;
+        //     }
+        //
+        // }
 
         [ServerCallback]
-        bool CheckWinner(CellValue currentScore)
-        {
-            if ((currentScore & CellValue.TopRow) == CellValue.TopRow)
-                return true;
-            if ((currentScore & CellValue.MidRow) == CellValue.MidRow)
-                return true;
-            if ((currentScore & CellValue.BotRow) == CellValue.BotRow)
-                return true;
-            if ((currentScore & CellValue.LeftCol) == CellValue.LeftCol)
-                return true;
-            if ((currentScore & CellValue.MidCol) == CellValue.MidCol)
-                return true;
-            if ((currentScore & CellValue.RightCol) == CellValue.RightCol)
-                return true;
-            if ((currentScore & CellValue.Diag1) == CellValue.Diag1)
-                return true;
-            if ((currentScore & CellValue.Diag2) == CellValue.Diag2)
-                return true;
+        // bool CheckWinner(CellValue currentScore)
+        // {
+        //     if ((currentScore & CellValue.TopRow) == CellValue.TopRow)
+        //         return true;
+        //     if ((currentScore & CellValue.MidRow) == CellValue.MidRow)
+        //         return true;
+        //     if ((currentScore & CellValue.BotRow) == CellValue.BotRow)
+        //         return true;
+        //     if ((currentScore & CellValue.LeftCol) == CellValue.LeftCol)
+        //         return true;
+        //     if ((currentScore & CellValue.MidCol) == CellValue.MidCol)
+        //         return true;
+        //     if ((currentScore & CellValue.RightCol) == CellValue.RightCol)
+        //         return true;
+        //     if ((currentScore & CellValue.Diag1) == CellValue.Diag1)
+        //         return true;
+        //     if ((currentScore & CellValue.Diag2) == CellValue.Diag2)
+        //         return true;
+        //
+        //     return false;
+        // }
 
-            return false;
-        }
-
-        [ClientRpc]
-        public void RpcUpdateCell(CellValue cellValue, NetworkIdentity player)
-        {
-            MatchCells[cellValue].SetPlayer(player);
-        }
+        // [ClientRpc]
+        // public void RpcUpdateCell(CellValue cellValue, NetworkIdentity player)
+        // {
+        //     MatchCells[cellValue].SetPlayer(player);
+        // }
 
         [ClientRpc]
         public void RpcShowWinner(NetworkIdentity winner)
         {
-            foreach (CellGUI cellGUI in MatchCells.Values)
-                cellGUI.GetComponent<Button>().interactable = false;
+            // foreach (CellGUI cellGUI in MatchCells.Values)
+            //     cellGUI.GetComponent<Button>().interactable = false;
 
             if (winner == null)
             {
@@ -206,10 +206,10 @@ namespace Mirror.Examples.MultipleMatch
         [ServerCallback]
         public void RestartGame()
         {
-            foreach (CellGUI cellGUI in MatchCells.Values)
-                cellGUI.SetPlayer(null);
+            // foreach (CellGUI cellGUI in MatchCells.Values)
+            //     cellGUI.SetPlayer(null);
 
-            boardScore = CellValue.None;
+            //boardScore = CellValue.None;
 
             NetworkIdentity[] keys = new NetworkIdentity[matchPlayerData.Keys.Count];
             matchPlayerData.Keys.CopyTo(keys, 0);
@@ -217,7 +217,7 @@ namespace Mirror.Examples.MultipleMatch
             foreach (NetworkIdentity identity in keys)
             {
                 MatchPlayerData mpd = matchPlayerData[identity];
-                mpd.currentScore = CellValue.None;
+                //mpd.currentScore = CellValue.None;
                 matchPlayerData[identity] = mpd;
             }
 
@@ -230,8 +230,8 @@ namespace Mirror.Examples.MultipleMatch
         [ClientRpc]
         public void RpcRestartGame()
         {
-            foreach (CellGUI cellGUI in MatchCells.Values)
-                cellGUI.SetPlayer(null);
+            // foreach (CellGUI cellGUI in MatchCells.Values)
+            //     cellGUI.SetPlayer(null);
 
             exitButton.gameObject.SetActive(false);
             playAgainButton.gameObject.SetActive(false);

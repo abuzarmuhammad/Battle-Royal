@@ -316,7 +316,7 @@ namespace JUTPS.ActionScripts
         {
             // Physic Changes.
             if (rb)
-                rb.velocity = CurrentVehicle.RigidBody.velocity;
+                rb.linearVelocity = CurrentVehicle.RigidBody.linearVelocity;
 
             // Update character position inside vehicle.
             if (CurrentVehicleCharacterIK && CurrentVehicleCharacterIK.InverseKinematicTargetPositions.CharacterPosition)
@@ -404,7 +404,7 @@ namespace JUTPS.ActionScripts
         /// <param name="immediately">If true, the character will not have a delay to enter, it's made immediately.</param>
         public void DriveVehicle(Vehicle vehicle, JUVehicleCharacterIK vehicleCharacterIK, bool immediately = false)
         {
-            if (!vehicle || !CanEnterVehicle || !TPSCharacter || rb.velocity.magnitude > MaxCharacterSpeedToEnter)
+            if (!vehicle || !CanEnterVehicle || !TPSCharacter || rb.linearVelocity.magnitude > MaxCharacterSpeedToEnter)
                 return;
 
             if (vehicleCharacterIK && !vehicleCharacterIK.CharactersCanGetVehicle)
@@ -452,7 +452,7 @@ namespace JUTPS.ActionScripts
         {
             TPSCharacter.DisableLocomotion();
 
-            bool isMoving = TPSCharacter.IsMoving || rb.velocity.magnitude > MaxCharacterSpeedToEnter;
+            bool isMoving = TPSCharacter.IsMoving || rb.linearVelocity.magnitude > MaxCharacterSpeedToEnter;
             bool isRagdolling = _ragdoller.State == AdvancedRagdollController.RagdollState.Ragdolled;
 
             if (IsCharacterEntering && (isMoving || isRagdolling)) CancelEnterVehicle();
@@ -548,8 +548,8 @@ namespace JUTPS.ActionScripts
                 return;
 
             float vehicleSpeed = 0f;
-            if (IsDriving) vehicleSpeed = CurrentVehicle.RigidBody.velocity.magnitude;
-            else if (NearestVehicle) vehicleSpeed = NearestVehicle.RigidBody.velocity.magnitude;
+            if (IsDriving) vehicleSpeed = CurrentVehicle.RigidBody.linearVelocity.magnitude;
+            else if (NearestVehicle) vehicleSpeed = NearestVehicle.RigidBody.linearVelocity.magnitude;
 
             if (IsDriving && vehicleSpeed < MaxVehicleSpeedToExit)
                 ExitVehicle();
