@@ -12,6 +12,8 @@ public class DataHandler : SingeltonBase<DataHandler>
 	private BinaryFormatter formatter = new BinaryFormatter();
 	private FileStream _stream;
 	private string path;
+
+	[Space(2)]
 	public int maxPlayers;
 	public override void Awake()
 	{
@@ -70,10 +72,10 @@ public class DataHandler : SingeltonBase<DataHandler>
 	// 	SaveData();
 	// }
 	//
-	// private void OnApplicationQuit()
-	// {
-	// 	SaveData();
-	// }
+	private void OnApplicationQuit()
+	{
+		SaveData();
+	}
 
 }
 
@@ -81,9 +83,11 @@ public class DataHandler : SingeltonBase<DataHandler>
 public class Data
 {
 	public Dictionary<string, string> PlayerAttributesData;
+	public SettingData Setting;
 	public Data()
 	{
 		PlayerAttributesData = new Dictionary<string, string>();
+
 	}
 }
 

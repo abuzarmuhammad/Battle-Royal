@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerProfilePanel : MonoBehaviour
 {
     [SerializeField] private List<PlayerAttributes> playerAttributes = new List<PlayerAttributes>();
-    [SerializeField] private  List<GameObject> allPanels = new List<GameObject>();
+    [SerializeField] private List<GameObject> allPanels = new List<GameObject>();
     [SerializeField] private List<LeftNavigationSlot> allLeftSlots;
 
     
