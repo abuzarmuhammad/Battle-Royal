@@ -1,0 +1,1 @@
+D:\+++Unity WorkingProjects\Battle-Royal\Library\Bee\Android\Prj\Mono2x\Gradle\unityLibrary\build\intermediates\cxx\RelWithDebInfo\5973p5kc\obj\armeabi-v7a

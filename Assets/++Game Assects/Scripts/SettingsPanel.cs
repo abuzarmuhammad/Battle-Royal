@@ -4,7 +4,6 @@ using System.Xml;
 using Mirror.BouncyCastle.Asn1.Mozilla;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Playables;
 using UnityEngine.UI;
 using static SettingData;
 using static SettingData.Controls;
@@ -16,7 +15,11 @@ public class SettingsPanel : MonoBehaviour
 
     [Header("---------Graphics Control Panels---------")]
     [SerializeField] private List<ButtonUIAttributes> allGraphicsButton;
+    int GraphicState_index;
     [SerializeField] private List<ButtonUIAttributes> allFrameRateButton;
+    int FrameRateState_index;
+    [SerializeField] private List<ButtonUIAttributes> allGraphicsStyleButton;
+    int GraphicStyleState_index;
     [SerializeField] private SliderUIAttributes Brightness;
 
     [Header("---------Sounds Control Panels---------")]
@@ -31,8 +34,13 @@ public class SettingsPanel : MonoBehaviour
     [SerializeField] private ToggleButtonUIAttributes FireSetting_Scope_Attributes;
     private bool FireSetting_Scope = true;
     [SerializeField] private List<ButtonUIAttributes> allBoltRifleButton;
+    int FBoltRifleState_index;
     [SerializeField] private List<ButtonUIAttributes> allShotgunFireButton;
+    int ShotgunFireState_index;
     [SerializeField] private List<ButtonUIAttributes> allSensivitySettingsButton;
+    int SensivitySettingsState_index;
+
+    [SerializeField] private List<ButtonUIAttributes> allControlType_Buttons;
 
     [Space(5)]
     [SerializeField] private SliderUIAttributes TppnoScope;
@@ -44,7 +52,11 @@ public class SettingsPanel : MonoBehaviour
     [SerializeField] private SliderUIAttributes CameraSensivity;
     [SerializeField] private SliderUIAttributes CameraParachuting;
 
+    [Header("---------Custom Control Panels---------")]
+    [SerializeField] private GameObject _CustomControlPopup;
+    [SerializeField] private TMP_Text _CustomControl_txt;
 
+    int CustomControl;
     [Header("---------Gameplay Control Panels---------")]
     [SerializeField] private ToggleButtonUIAttributes AutoPicksHints_Attributes;
     private bool autoPickHints = true;
@@ -59,13 +71,20 @@ public class SettingsPanel : MonoBehaviour
     public Sprite UnSelectButton_Sprite;
     public Sprite SelectButton_Sprite;
 
-    private void Start()
+    private void OnEnable()
+    {
+        SetSettingAttributes();
+    }
+
+    void SetSettingAttributes()
     {
         SetGraphicsAttributes();
 
         SetSoundControlAttributes();
 
         SetControlAttributes();
+
+        SetGamePlayAttributes();
     }
     public void OpenPanel(int index)
     {
@@ -77,10 +96,105 @@ public class SettingsPanel : MonoBehaviour
         allLeftSlots[index].Enable();
     }
 
+    public void SaveSettings()
+    {
+        // Save Graphic Settings
+        DataHandler.Instance.IngameData.Setting.graphic.Graphic_val = (GraphicState)GraphicState_index;
+        DataHandler.Instance.IngameData.Setting.graphic.FrameRate_val = (FrameRateState)FrameRateState_index;
+        DataHandler.Instance.IngameData.Setting.graphic.GraphicStyle_val = (GraphicStyleState)GraphicStyleState_index;
+        DataHandler.Instance.IngameData.Setting.graphic.BrightnessSlider_val = Brightness.slider.value;
+
+        // Save Sound Settings
+        DataHandler.Instance.IngameData.Setting.sound.MasterVolumeSlider_val = MasterVolume.slider.value;
+        DataHandler.Instance.IngameData.Setting.sound.BackgroundMusicSlider_val = BackgroundMusic.slider.value;
+        DataHandler.Instance.IngameData.Setting.sound.VoiceChatSlider_val = VoiceChat.slider.value;
+        DataHandler.Instance.IngameData.Setting.sound.GameSFXSlider_val = GameSFX.slider.value;
+
+        // Save Control Settings
+        DataHandler.Instance.IngameData.Setting.Control.TppnoScopeSlider_val = TppnoScope.slider.value;
+        DataHandler.Instance.IngameData.Setting.Control.RedDotSlider_val = RedDote.slider.value;
+        DataHandler.Instance.IngameData.Setting.Control.twoxScopeSlider_val = TwoXScope.slider.value;
+        DataHandler.Instance.IngameData.Setting.Control.ThreexScopeSlider_val =ThreeXScope.slider.value;
+        DataHandler.Instance.IngameData.Setting.Control.FourxScopeSlider_val = FourXScope.slider.value;
+        DataHandler.Instance.IngameData.Setting.Control.SixxScopeSlider_val = SixXScope.slider.value;
+        DataHandler.Instance.IngameData.Setting.Control.CameraSensivitySlider_val = CameraSensivity.slider.value;
+        DataHandler.Instance.IngameData.Setting.Control.CameraParachutingSlider_val = CameraParachuting.slider.value;
+
+        // Save FireSettings
+        DataHandler.Instance.IngameData.Setting.Control.fireSetting.AlwaysOn = FireSetting_AlwaysOn;
+        DataHandler.Instance.IngameData.Setting.Control.fireSetting.Scope = FireSetting_Scope;
+        DataHandler.Instance.IngameData.Setting.Control.fireSetting.BoltActionRifle = (FireAction)FBoltRifleState_index;
+        DataHandler.Instance.IngameData.Setting.Control.fireSetting.ShotgunFiringMode = (FireAction)ShotgunFireState_index;
+        DataHandler.Instance.IngameData.Setting.Control.fireSetting.SensitivitySetting = (Sensitivity)SensivitySettingsState_index;
+
+        // Save Custom Control Settings
+        DataHandler.Instance.IngameData.Setting.CustomGamePlayControl.CustomControlSelected = CustomControl;
+
+        // Save Gameplay Settings
+        DataHandler.Instance.IngameData.Setting.gameplay.autoPickHints = autoPickHints;
+        DataHandler.Instance.IngameData.Setting.gameplay.autoPick = autoPick; 
+        DataHandler.Instance.IngameData.Setting.gameplay.Hints = hints; 
+
+        // Save settings to persistent data
+        DataHandler.Instance.SaveData();
+    }
+    public void ResetSettings()
+    {
+        // Reset Graphic Settings
+        DataHandler.Instance.IngameData.Setting.graphic.Graphic_val = SettingData.GraphicState.Balance; // Default graphic state
+        DataHandler.Instance.IngameData.Setting.graphic.FrameRate_val = SettingData.FrameRateState.Medium; // Default frame rate state
+        DataHandler.Instance.IngameData.Setting.graphic.GraphicStyle_val = SettingData.GraphicStyleState.Colorful; // Default style
+        DataHandler.Instance.IngameData.Setting.graphic.BrightnessSlider_val = 0.5f; // Default brightness
+
+        // Reset Sound Settings
+        DataHandler.Instance.IngameData.Setting.sound.MasterVolumeSlider_val = 0.5f; // Default master volume
+        DataHandler.Instance.IngameData.Setting.sound.BackgroundMusicSlider_val = 0.5f; // Default background music volume
+        DataHandler.Instance.IngameData.Setting.sound.VoiceChatSlider_val = 0.5f; // Default voice chat volume
+        DataHandler.Instance.IngameData.Setting.sound.GameSFXSlider_val = 0.5f; // Default game sound effects volume
+
+        // Reset Control Settings
+        DataHandler.Instance.IngameData.Setting.Control.TppnoScopeSlider_val = 0.5f; // Default TPP no scope sensitivity
+        DataHandler.Instance.IngameData.Setting.Control.RedDotSlider_val = 0.5f; // Default red dot scope sensitivity
+        DataHandler.Instance.IngameData.Setting.Control.twoxScopeSlider_val = 0.5f; // Default 2x scope sensitivity
+        DataHandler.Instance.IngameData.Setting.Control.ThreexScopeSlider_val = 0.5f; // Default 3x scope sensitivity
+        DataHandler.Instance.IngameData.Setting.Control.FourxScopeSlider_val = 0.5f; // Default 4x scope sensitivity
+        DataHandler.Instance.IngameData.Setting.Control.SixxScopeSlider_val = 0.5f; // Default 6x scope sensitivity
+        DataHandler.Instance.IngameData.Setting.Control.CameraSensivitySlider_val = 0.5f; // Default camera sensitivity
+        DataHandler.Instance.IngameData.Setting.Control.CameraParachutingSlider_val = 0.5f; // Default camera parachuting sensitivity
+
+        // Reset FireSettings
+        DataHandler.Instance.IngameData.Setting.Control.fireSetting.AlwaysOn = true; // Default fire setting AlwaysOn
+        DataHandler.Instance.IngameData.Setting.Control.fireSetting.Scope = false; // Default fire setting for scope
+        DataHandler.Instance.IngameData.Setting.Control.fireSetting.BoltActionRifle = FireAction.Tap; // Default fire action for bolt-action rifle
+        DataHandler.Instance.IngameData.Setting.Control.fireSetting.ShotgunFiringMode = FireAction.Release; // Default shotgun firing mode
+        DataHandler.Instance.IngameData.Setting.Control.fireSetting.SensitivitySetting = Sensitivity.Medium; // Default sensitivity
+
+        // Reset Custom Control Settings
+        DataHandler.Instance.IngameData.Setting.CustomGamePlayControl.CustomControlSelected = 0; // Default custom control selection
+
+        // Reset Gameplay Settings
+        DataHandler.Instance.IngameData.Setting.gameplay.autoPickHints = true; // Default auto pick hints
+        DataHandler.Instance.IngameData.Setting.gameplay.autoPick = true; // Default auto pick
+        DataHandler.Instance.IngameData.Setting.gameplay.Hints = true; // Default hints
+
+        // Save the default settings to persistent data
+        DataHandler.Instance.SaveData();
+
+        SetSettingAttributes();
+    }
+
+
+    #region Slider Relate Function
     private void SetSlider(SliderUIAttributes sliderUI,  float sliderValue)
     {
         // Set the initial value of the slider
-        sliderUI.slider.value = sliderValue;
+        LeanTween.value(gameObject, sliderUI.slider.value, sliderValue, 0.15f)
+            .setOnUpdate((float val) =>
+            {
+                sliderUI.slider.value = val;
+            });
+
+
         int val = Mathf.RoundToInt(sliderUI.slider.value * 100);
         sliderUI._valueText.text = $"<color=#ABFEAF>{val}</color>/<color=white>100%</color>";
 
@@ -95,18 +209,82 @@ public class SettingsPanel : MonoBehaviour
         int val = Mathf.RoundToInt(sliderUI.slider.value * 100);
         sliderUI._valueText.text = $"<color=#ABFEAF>{val}</color>/<color=white>100%</color>";
 
-       
+       // SaveSliderData(sliderUI);
     }
 
-    #region Graphics Func
+    void SaveSliderData(SliderUIAttributes sliderUI)
+    {
+        if (sliderUI == Brightness)
+        {
+            DataHandler.Instance.IngameData.Setting.graphic.BrightnessSlider_val = sliderUI.slider.value;
+        }
+        else if(sliderUI == MasterVolume)
+        {
+            DataHandler.Instance.IngameData.Setting.sound.MasterVolumeSlider_val = sliderUI.slider.value;
+        }
+        else if (sliderUI == BackgroundMusic)
+        {
+            DataHandler.Instance.IngameData.Setting.sound.BackgroundMusicSlider_val = sliderUI.slider.value;
+        }
+        else if (sliderUI == VoiceChat)
+        {
+            DataHandler.Instance.IngameData.Setting.sound.VoiceChatSlider_val = sliderUI.slider.value;
+        }
+        else if (sliderUI == GameSFX)
+        {
+            DataHandler.Instance.IngameData.Setting.sound.GameSFXSlider_val = sliderUI.slider.value;
+        }
+        else if (sliderUI == TppnoScope)
+        {
+            DataHandler.Instance.IngameData.Setting.Control.TppnoScopeSlider_val = sliderUI.slider.value;
+        }
+        else if (sliderUI == RedDote)
+        {
+            DataHandler.Instance.IngameData.Setting.Control.RedDotSlider_val = sliderUI.slider.value;
+        }
+        else if (sliderUI == TwoXScope)
+        {
+            DataHandler.Instance.IngameData.Setting.Control.twoxScopeSlider_val = sliderUI.slider.value;
+        }
+        else if (sliderUI == ThreeXScope)
+        {
+            DataHandler.Instance.IngameData.Setting.Control.ThreexScopeSlider_val = sliderUI.slider.value;
+        }
+        else if (sliderUI == FourXScope)
+        {
+            DataHandler.Instance.IngameData.Setting.Control.FourxScopeSlider_val = sliderUI.slider.value;
+        }
+        else if (sliderUI == SixXScope)
+        {
+            DataHandler.Instance.IngameData.Setting.Control.SixxScopeSlider_val = sliderUI.slider.value;
+        }
+        else if (sliderUI == CameraSensivity)
+        {
+            DataHandler.Instance.IngameData.Setting.Control.CameraSensivitySlider_val = sliderUI.slider.value;
+        }
+        else if (sliderUI == CameraParachuting)
+        {
+            DataHandler.Instance.IngameData.Setting.Control.CameraParachutingSlider_val = sliderUI.slider.value;
+        }
+    }
+
+    #endregion
+
+    #region Graphics Function
 
     private void SetGraphicsAttributes()
     {
         // Retrieve the current Control settings
         var GraphicSetting = DataHandler.Instance.IngameData.Setting.graphic;
 
+        UpdateGraphicState((int)GraphicSetting.Graphic_val);
+        UpdateFrameRateState((int) GraphicSetting.FrameRate_val);
+        UpdateGraphicsStyleState((int)GraphicSetting.GraphicStyle_val);
+
         SetSlider(Brightness, GraphicSetting.BrightnessSlider_val);
     }
+
+  
 
 
     public void UpdateGraphicState(int graphic)
@@ -123,15 +301,7 @@ public class SettingsPanel : MonoBehaviour
         allGraphicsButton[graphic].Text.fontStyle |= FontStyles.Bold; // Add the Bold flag
         allGraphicsButton[graphic].Text.color = Color.black;
 
-        // Map the index to the corresponding enum value
-        if (System.Enum.IsDefined(typeof(GraphicState), graphic))
-        {
-            DataHandler.Instance.IngameData.Setting.graphic.Graphic_val = (GraphicState)graphic;
-        }
-        else
-        {
-            Debug.LogWarning("Invalid graphic index!");
-        }
+        GraphicState_index = graphic;
     }
 
     public void UpdateFrameRateState(int FrameRate)
@@ -148,20 +318,25 @@ public class SettingsPanel : MonoBehaviour
         allFrameRateButton[FrameRate].Text.fontStyle |= FontStyles.Bold; // Add the Bold flag
         allFrameRateButton[FrameRate].Text.color = Color.black;
 
-        // Map the index to the corresponding enum value
-        if (System.Enum.IsDefined(typeof(FrameRateState), FrameRate))
+       FrameRateState_index = FrameRate;
+    }
+
+    public void UpdateGraphicsStyleState(int GraphicStyle)
+    {
+        for (int i = 0; i < allGraphicsStyleButton.Count; i++)
         {
-            DataHandler.Instance.IngameData.Setting.graphic.FrameRate_val = (FrameRateState)FrameRate;
+            allGraphicsStyleButton[i].Button.transform.GetChild(0).gameObject.SetActive(false);
+
         }
-        else
-        {
-            Debug.LogWarning("Invalid graphic index!");
-        }
+
+        allGraphicsStyleButton[GraphicStyle].Button.transform.GetChild(0).gameObject.SetActive(true); // Enable The Highlight
+
+       GraphicStyleState_index = GraphicStyle;
     }
     #endregion
 
 
-    #region Sound Func
+    #region Sound Fucntion
     void SetSoundControlAttributes()
     {
         // Retrieve the current sound settings
@@ -182,14 +357,46 @@ public class SettingsPanel : MonoBehaviour
 
     #endregion
 
+    #region CustomControl
 
-    #region Controls Func
+    public void OpenCustomControlPopup(int customcontrol_index)
+    {
+        LeanTween.alphaCanvas(_CustomControlPopup.GetComponent<CanvasGroup>(), 1, 0.2f).setOnComplete(() =>
+        {
+            _CustomControlPopup.SetActive(true);
+        });
+
+        CustomControl = customcontrol_index;
+    }
+
+
+    public void CloseCustomControlPopup()
+    {
+        LeanTween.alphaCanvas(_CustomControlPopup.GetComponent<CanvasGroup>(), 0, 0.2f).setOnComplete(() =>
+        {
+            _CustomControlPopup.SetActive(false);
+        });
+    }
+    #endregion
+
+
+    #region Controls Function
 
 
     void SetControlAttributes()
     {
         // Retrieve the current Control settings
         var ControlSetting = DataHandler.Instance.IngameData.Setting.Control;
+
+        FireSetting_AlwaysOn = !ControlSetting.fireSetting.AlwaysOn;
+        ToggleFireSetting_AlwaysOn();
+
+        FireSetting_Scope = !ControlSetting.fireSetting.Scope;
+        ToggleFireSetting_Scope();
+
+        UpdateFireSettingBoltRifleState((int)ControlSetting.fireSetting.BoltActionRifle);
+        UpdateFireSettingShotgunState((int)ControlSetting.fireSetting.ShotgunFiringMode);
+        UpdateFireSensivityState((int)ControlSetting.fireSetting.SensitivitySetting);
 
        SetSlider(TppnoScope, ControlSetting.TppnoScopeSlider_val);
        SetSlider(RedDote, ControlSetting.RedDotSlider_val);
@@ -215,15 +422,7 @@ public class SettingsPanel : MonoBehaviour
         allBoltRifleButton[BoltRifleState].Text.fontStyle |= FontStyles.Bold; // Add the Bold flag
         allBoltRifleButton[BoltRifleState].Text.color = Color.black;
 
-        // Map the index to the corresponding enum value
-        if (System.Enum.IsDefined(typeof(FireAction), BoltRifleState))
-        {
-            DataHandler.Instance.IngameData.Setting.Control.fireSetting.BoltActionRifle = (FireAction)BoltRifleState;
-        }
-        else
-        {
-            Debug.LogWarning("Invalid graphic index!");
-        }
+        FBoltRifleState_index = BoltRifleState;
     }
 
     public void UpdateFireSettingShotgunState(int ShotGunStateState)
@@ -240,15 +439,7 @@ public class SettingsPanel : MonoBehaviour
         allShotgunFireButton[ShotGunStateState].Text.fontStyle |= FontStyles.Bold; // Add the Bold flag
         allShotgunFireButton[ShotGunStateState].Text.color = Color.black;
 
-        // Map the index to the corresponding enum value
-        if (System.Enum.IsDefined(typeof(FireAction), ShotGunStateState))
-        {
-            DataHandler.Instance.IngameData.Setting.Control.fireSetting.ShotgunFiringMode = (FireAction)ShotGunStateState;
-        }
-        else
-        {
-            Debug.LogWarning("Invalid graphic index!");
-        }
+        ShotgunFireState_index = ShotGunStateState;
     }
 
     public void UpdateFireSensivityState(int SensivityState)
@@ -265,15 +456,24 @@ public class SettingsPanel : MonoBehaviour
         allSensivitySettingsButton[SensivityState].Text.fontStyle |= FontStyles.Bold; // Add the Bold flag
         allSensivitySettingsButton[SensivityState].Text.color = Color.black;
 
-        // Map the index to the corresponding enum value
-        if (System.Enum.IsDefined(typeof(Sensitivity), SensivityState))
+       SensivitySettingsState_index = SensivityState;
+    }
+
+    public void UpdateControlTypeState(int ControlType)
+    {
+        for (int i = 0; i < allControlType_Buttons.Count; i++)
         {
-            DataHandler.Instance.IngameData.Setting.Control.fireSetting.SensitivitySetting = (Sensitivity)SensivityState;
+            allControlType_Buttons[i].Button.sprite = UnSelectButton_Sprite;
+            allControlType_Buttons[i].Text.color = Color.grey;
+            allControlType_Buttons[i].Text.fontStyle &= ~FontStyles.Bold; // Remove the Bold flag
+
         }
-        else
-        {
-            Debug.LogWarning("Invalid graphic index!");
-        }
+
+        allControlType_Buttons[ControlType].Button.sprite = SelectButton_Sprite;
+        allControlType_Buttons[ControlType].Text.fontStyle |= FontStyles.Bold; // Add the Bold flag
+        allControlType_Buttons[ControlType].Text.color = Color.black;
+
+        //SensivitySettingsState_index = ControlType;
     }
 
     public void ToggleFireSetting_AlwaysOn()
@@ -294,7 +494,6 @@ public class SettingsPanel : MonoBehaviour
             LeanTween.imageColor(FireSetting_AlwaysOn_Attributes.toggleBg.GetComponent<RectTransform>(), grey, 0.2f);
         }
 
-        DataHandler.Instance.IngameData.Setting.Control.fireSetting.AlwaysOn = FireSetting_AlwaysOn;
     }
 
     public void ToggleFireSetting_Scope()
@@ -315,13 +514,27 @@ public class SettingsPanel : MonoBehaviour
             LeanTween.imageColor(FireSetting_Scope_Attributes.toggleBg.GetComponent<RectTransform>(), grey, 0.2f);
         }
 
-        DataHandler.Instance.IngameData.Setting.Control.fireSetting.Scope = FireSetting_Scope;
     }
 
     #endregion
 
 
-    #region GamePlay Func
+    #region GamePlay Function
+
+
+    void SetGamePlayAttributes()
+    {
+        var Gameplaydata = DataHandler.Instance.IngameData.Setting.gameplay;
+
+        autoPickHints = !Gameplaydata.autoPickHints;
+        ToggleAutoPicksHints();
+
+        this.autoPick = !Gameplaydata.autoPick;
+        ToggleAutoPicks();
+
+        this.hints = !Gameplaydata.Hints;
+        ToggleHints();
+    }
     public void ToggleAutoPicksHints()
     {
         autoPickHints = !autoPickHints;
@@ -340,7 +553,6 @@ public class SettingsPanel : MonoBehaviour
             LeanTween.imageColor(AutoPicksHints_Attributes.toggleBg.GetComponent<RectTransform>(), grey, 0.2f);
         }
 
-        DataHandler.Instance.IngameData.Setting.gameplay.autoPickHints = autoPickHints;
     }
 
     public void ToggleAutoPicks()
@@ -361,7 +573,6 @@ public class SettingsPanel : MonoBehaviour
             LeanTween.imageColor(AutoPicks_Attributes.toggleBg.GetComponent<RectTransform>(), grey, 0.2f);
         }
 
-        DataHandler.Instance.IngameData.Setting.gameplay.autoPick = autoPick;
     }
 
     public void ToggleHints()
@@ -382,11 +593,12 @@ public class SettingsPanel : MonoBehaviour
             LeanTween.imageColor(Hints_Attributes.toggleBg.GetComponent<RectTransform>(), grey, 0.2f);
         }
 
-        DataHandler.Instance.IngameData.Setting.gameplay.Hints = hints;
     }
 
     #endregion
 }
+
+#region Attributes
 
 [System.Serializable]
 public class ButtonUIAttributes
@@ -412,6 +624,8 @@ public class ToggleButtonUIAttributes
     public Transform toggleOnTransform;
 }
 
+#endregion
+
 [System.Serializable]
 public class SettingData
 {
@@ -433,7 +647,7 @@ public class SettingData
         public FrameRateState FrameRate_val;
         public GraphicStyleState GraphicStyle_val;
 
-        public int BrightnessSlider_val;
+        public float BrightnessSlider_val;
     }
     [System.Serializable]
     public enum GraphicState
@@ -471,17 +685,17 @@ public class SettingData
 
         [Space(5)]
 
-        public int TppnoScopeSlider_val;
-        public int RedDotSlider_val;
+        public float TppnoScopeSlider_val;
+        public float RedDotSlider_val;
 
-        public int twoxScopeSlider_val;
-        public int ThreexScopeSlider_val;
+        public float twoxScopeSlider_val;
+        public float ThreexScopeSlider_val;
 
-        public int FourxScopeSlider_val;
-        public int SixxScopeSlider_val;
+        public float FourxScopeSlider_val;
+        public float SixxScopeSlider_val;
 
-        public int CameraSensivitySlider_val;
-        public int CameraParachutingSlider_val;
+        public float CameraSensivitySlider_val;
+        public float CameraParachutingSlider_val;
 
         [System.Serializable]
         public struct FireSetting
