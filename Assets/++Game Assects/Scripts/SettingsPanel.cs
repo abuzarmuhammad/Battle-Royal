@@ -73,7 +73,15 @@ public class SettingsPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        SetSettingAttributes();
+        if (!DataHandler.Instance.isFileExits())
+        {
+            ResetSettings();
+        }
+        else
+        {
+            SetSettingAttributes();
+        }
+        
     }
 
     void SetSettingAttributes()

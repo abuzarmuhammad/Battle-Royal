@@ -15,6 +15,8 @@ public class DataHandler : SingeltonBase<DataHandler>
 
 	[Space(2)]
 	public int maxPlayers;
+
+	bool Data_avaliable;
 	public override void Awake()
 	{
 		base.Awake();
@@ -38,11 +40,14 @@ public class DataHandler : SingeltonBase<DataHandler>
 				_stream = new FileStream(path, FileMode.Open);
 				IngameData = (Data)formatter.Deserialize(_stream);
 				_stream.Close();
-			}
+                Data_avaliable = true;
+
+            }
 			else
 			{
 				IngameData = new Data();
-			}
+                Data_avaliable = false; 
+            }
 			
 		}
 		catch (Exception e)
@@ -51,6 +56,12 @@ public class DataHandler : SingeltonBase<DataHandler>
 			throw;
 		}
 	}
+
+	public bool isFileExits()
+	{
+		return Data_avaliable;
+
+    }
 	
 	public void SaveData()
 	{ 
