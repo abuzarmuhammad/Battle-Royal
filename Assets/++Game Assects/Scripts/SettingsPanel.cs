@@ -111,6 +111,10 @@ public class SettingsPanel : MonoBehaviour
         DataHandler.Instance.IngameData.Setting.graphic.FrameRate_val = (FrameRateState)FrameRateState_index;
         DataHandler.Instance.IngameData.Setting.graphic.GraphicStyle_val = (GraphicStyleState)GraphicStyleState_index;
         DataHandler.Instance.IngameData.Setting.graphic.BrightnessSlider_val = Brightness.slider.value;
+        // Setting Graphics Setting
+        SetScreenBrightness(DataHandler.Instance.IngameData.Setting.graphic.BrightnessSlider_val);
+        SetGameFrameRate(DataHandler.Instance.IngameData.Setting.graphic.FrameRate_val);
+        SetGameGraphics(DataHandler.Instance.IngameData.Setting.graphic.Graphic_val);
 
         // Save Sound Settings
         DataHandler.Instance.IngameData.Setting.sound.MasterVolumeSlider_val = MasterVolume.slider.value;
@@ -148,18 +152,21 @@ public class SettingsPanel : MonoBehaviour
     }
     public void ResetSettings()
     {
+        Debug.Log(DataHandler.Instance);
+        Debug.Log(DataHandler.Instance.IngameData);
+        Debug.Log(DataHandler.Instance.IngameData.Setting);
         // Reset Graphic Settings
-        DataHandler.Instance.IngameData.Setting.graphic.Graphic_val = SettingData.GraphicState.Balance; // Default graphic state
-        DataHandler.Instance.IngameData.Setting.graphic.FrameRate_val = SettingData.FrameRateState.Medium; // Default frame rate state
-        DataHandler.Instance.IngameData.Setting.graphic.GraphicStyle_val = SettingData.GraphicStyleState.Colorful; // Default style
+        DataHandler.Instance.IngameData.Setting.graphic.Graphic_val = GraphicState.Balance; // Default graphic state
+        DataHandler.Instance.IngameData.Setting.graphic.FrameRate_val = FrameRateState.Medium; // Default frame rate state
+        DataHandler.Instance.IngameData.Setting.graphic.GraphicStyle_val = GraphicStyleState.Colorful; // Default style
         DataHandler.Instance.IngameData.Setting.graphic.BrightnessSlider_val = 0.5f; // Default brightness
-
+        Debug.Log("Graphic Settings");
         // Reset Sound Settings
         DataHandler.Instance.IngameData.Setting.sound.MasterVolumeSlider_val = 0.5f; // Default master volume
         DataHandler.Instance.IngameData.Setting.sound.BackgroundMusicSlider_val = 0.5f; // Default background music volume
         DataHandler.Instance.IngameData.Setting.sound.VoiceChatSlider_val = 0.5f; // Default voice chat volume
         DataHandler.Instance.IngameData.Setting.sound.GameSFXSlider_val = 0.5f; // Default game sound effects volume
-
+        Debug.Log("Sound Settings");
         // Reset Control Settings
         DataHandler.Instance.IngameData.Setting.Control.TppnoScopeSlider_val = 0.5f; // Default TPP no scope sensitivity
         DataHandler.Instance.IngameData.Setting.Control.RedDotSlider_val = 0.5f; // Default red dot scope sensitivity
@@ -169,24 +176,28 @@ public class SettingsPanel : MonoBehaviour
         DataHandler.Instance.IngameData.Setting.Control.SixxScopeSlider_val = 0.5f; // Default 6x scope sensitivity
         DataHandler.Instance.IngameData.Setting.Control.CameraSensivitySlider_val = 0.5f; // Default camera sensitivity
         DataHandler.Instance.IngameData.Setting.Control.CameraParachutingSlider_val = 0.5f; // Default camera parachuting sensitivity
-
+        Debug.Log("Control Settings");
         // Reset FireSettings
         DataHandler.Instance.IngameData.Setting.Control.fireSetting.AlwaysOn = true; // Default fire setting AlwaysOn
         DataHandler.Instance.IngameData.Setting.Control.fireSetting.Scope = false; // Default fire setting for scope
         DataHandler.Instance.IngameData.Setting.Control.fireSetting.BoltActionRifle = FireAction.Tap; // Default fire action for bolt-action rifle
         DataHandler.Instance.IngameData.Setting.Control.fireSetting.ShotgunFiringMode = FireAction.Release; // Default shotgun firing mode
         DataHandler.Instance.IngameData.Setting.Control.fireSetting.SensitivitySetting = Sensitivity.Medium; // Default sensitivity
-
+        Debug.Log("FireSettings Settings");
         // Reset Custom Control Settings
         DataHandler.Instance.IngameData.Setting.CustomGamePlayControl.CustomControlSelected = 0; // Default custom control selection
-
+        Debug.Log("Custom Control Settings");
         // Reset Gameplay Settings
         DataHandler.Instance.IngameData.Setting.gameplay.autoPickHints = true; // Default auto pick hints
         DataHandler.Instance.IngameData.Setting.gameplay.autoPick = true; // Default auto pick
         DataHandler.Instance.IngameData.Setting.gameplay.Hints = true; // Default hints
-
+        Debug.Log("Gameplayl Settings");
         // Save the default settings to persistent data
-        DataHandler.Instance.SaveData();
+       DataHandler.Instance.SaveData();
+
+        SetScreenBrightness(DataHandler.Instance.IngameData.Setting.graphic.BrightnessSlider_val);
+        SetGameFrameRate(DataHandler.Instance.IngameData.Setting.graphic.FrameRate_val);
+        SetGameGraphics(DataHandler.Instance.IngameData.Setting.graphic.Graphic_val);
 
         SetSettingAttributes();
     }
@@ -290,9 +301,56 @@ public class SettingsPanel : MonoBehaviour
         UpdateGraphicsStyleState((int)GraphicSetting.GraphicStyle_val);
 
         SetSlider(Brightness, GraphicSetting.BrightnessSlider_val);
+       
     }
 
-  
+    void SetScreenBrightness(float value)
+    {
+        Screen.brightness = value;
+    }
+
+    void SetGameFrameRate(FrameRateState frameRateType)
+    {
+        switch (frameRateType)
+        {
+            case FrameRateState.PawerSaving:
+                Application.targetFrameRate = 30; // Lower frame rate for energy efficiency
+                break;
+            case FrameRateState.Medium:
+                Application.targetFrameRate = 60; // Standard frame rate for smooth performance
+                break;
+            case FrameRateState.High:
+                Application.targetFrameRate = 90; // High frame rate for advanced devices
+                break;
+            case FrameRateState.UltraHigh:
+                Application.targetFrameRate = 120; // Ultra-smooth frame rate or max supported
+                break;
+            default:
+                Application.targetFrameRate = -1; // Unlimited frame rate (default)
+                break;
+        }
+    }
+    void SetGameGraphics(GraphicState graphicStateType)
+    {
+        switch (graphicStateType)
+        {
+            case GraphicState.Smooth:
+                QualitySettings.SetQualityLevel(0); // Lowest quality
+                break;
+            case GraphicState.Balance:
+                QualitySettings.SetQualityLevel(2); // Balance quality
+                break;
+            case GraphicState.HD:
+                QualitySettings.SetQualityLevel(3); // HD quality
+                break;
+            case GraphicState.HDR:
+                QualitySettings.SetQualityLevel(5); // HDR quality
+                break;
+            default:
+                QualitySettings.SetQualityLevel(2); // Balance quality
+                break;
+        }
+    }
 
 
     public void UpdateGraphicState(int graphic)
@@ -639,7 +697,7 @@ public class SettingData
 {
     public Graphic graphic;
 
-    public Sound sound;
+    public Sound sound =  new Sound();
 
     public Controls Control;
 

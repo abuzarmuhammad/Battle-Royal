@@ -98,8 +98,9 @@ public class Data
 	public Data()
 	{
 		PlayerAttributesData = new Dictionary<string, string>();
+        Setting = new SettingData();
 
-	}
+    }
 }
 
 
