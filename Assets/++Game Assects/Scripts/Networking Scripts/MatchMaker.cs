@@ -57,7 +57,7 @@ using UnityEngine.SceneManagement;
                 if (match.players.Count == match.maxPlayers) {
                     match.matchFull = true;
                     Debug.LogWarning("Match Is FUll Loading New Scene");
-                    NetworkManagerBattleRoyale.singleton.ServerChangeScene("Lobby",match.matchID);
+                    //NetworkManagerBattleRoyale.singleton.ServerChangeScene("Lobby",match.matchID);
                 }
                 return true;
             } else {

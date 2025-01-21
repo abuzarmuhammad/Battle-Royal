@@ -11,7 +11,7 @@ public enum GameStateEnum
     GAME_PLAY,
 }
 
-public class RepositionHandler : NetworkBehaviour
+public class RepositionHandler : MonoBehaviour
 {
     public static RepositionHandler Instance;
     
@@ -27,7 +27,6 @@ public class RepositionHandler : NetworkBehaviour
     {
         currentGameState = GameStateEnum.MAIN_MENU; 
         SwitchState(GameStateEnum.MAIN_MENU);
-        SwitchPosition(Player.localPlayer.transform);
     }
 
     public void SwitchState(GameStateEnum _newState)
@@ -41,7 +40,10 @@ public class RepositionHandler : NetworkBehaviour
     public void SwitchPosition(Transform _transform)
     {
         Vector3 newPosition = allGameStates.Find(x => x.gameState == currentGameState)._targetTransform.position;
+        Quaternion newRotation = allGameStates.Find(x => x.gameState == currentGameState)._targetTransform.rotation;
+        Debug.LogWarning("setting position of " + _transform.name + " to " + newPosition + " and rotation to " + newRotation);
         _transform.position = newPosition;
+        _transform.rotation = newRotation;
     }
     
 }

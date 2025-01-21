@@ -36,9 +36,15 @@ using UnityEngine.SceneManagement;
                 localPlayer = this;
                 DontDestroyOnLoad(gameObject);
                 Debug.LogWarning("Client Started");
+                if (localPlayer.Equals(this))
+                {
+                    RepositionHandler.Instance.SwitchState(GameStateEnum.MAIN_MENU);
+                    RepositionHandler.Instance.SwitchPosition(transform);
+                }
                 //Invoke(nameof(SearchGame),4);
             } else {
                 Debug.Log ($"Spawning other player UI Prefab");
+                gameObject.layer = LayerMask.NameToLayer ("OtherPlayer");
                 // playerLobbyUI = UILobby.instance.SpawnPlayerUIPrefab (this);
             }
         }

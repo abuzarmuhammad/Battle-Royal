@@ -31,6 +31,8 @@ public class UIMANAGER : MonoBehaviour
     
     
     private Stack<Panel> _panelStack;
+
+    public bool IsClient;
     
     public void LoadGame()
     {
@@ -43,6 +45,8 @@ public class UIMANAGER : MonoBehaviour
         _panelStack.Push(allPanels.Find(x=>x._type==PanelType.MainMenu));
         EventManager.OnPanelOpenClicked += OpenPanel;
         EventManager.OnPanelCloseClicked += ClosePanel;
+        if(IsClient) 
+            NetworkManager.singleton.StartClient();
     }
 
     private void OnDisable()
@@ -79,7 +83,7 @@ public class UIMANAGER : MonoBehaviour
     public void ConnectClient()
     {
         Debug.LogWarning("Connecting to Client");
-        NetworkManager.singleton.StartClient();
+        // NetworkManager.singleton.StartClient();
     }
 
     private void OnConnectedToServer()

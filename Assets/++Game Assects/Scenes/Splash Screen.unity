@@ -2108,7 +2108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   networkManager: {fileID: 2068329001}
-  serverBuild: 0
+  serverBuild: 1
   isConnectedToServer: 0
 --- !u!1 &2068328998
 GameObject:
@@ -2198,7 +2198,7 @@ MonoBehaviour:
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 1093037038611221156, guid: 0f2581f7327409740a9d7b373c07349b,
+  playerPrefab: {fileID: 7831596024408029599, guid: 610b65ce2859df343b1554ae106e5a85,
     type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
