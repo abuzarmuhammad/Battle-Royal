@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 10
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -42,8 +42,8 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
-  m_GIWorkflowMode: 1
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -66,9 +66,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -288,7 +285,7 @@ CanvasRenderer:
   m_CullTransparentMesh: 1
 --- !u!95 &202504895
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -302,6 +299,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -369,9 +367,8 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 203844586}
   m_Enabled: 1
-  serializedVersion: 10
+  serializedVersion: 11
   m_Type: 1
-  m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
@@ -421,8 +418,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!4 &203844589
 Transform:
   m_ObjectHideFlags: 0
@@ -708,7 +709,7 @@ CanvasGroup:
   m_IgnoreParentGroups: 0
 --- !u!95 &539694833
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -722,6 +723,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -805,7 +807,7 @@ CanvasRenderer:
   m_CullTransparentMesh: 1
 --- !u!95 &551780965
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -819,6 +821,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -1224,7 +1227,7 @@ CanvasRenderer:
   m_CullTransparentMesh: 1
 --- !u!95 &882511600
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1238,6 +1241,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -1321,7 +1325,7 @@ CanvasRenderer:
   m_CullTransparentMesh: 1
 --- !u!95 &924873343
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1335,6 +1339,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -1653,15 +1658,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -1806,8 +1813,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b69eb79204d2f18429bbc10c911fcf4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: battleRoyale.data
-  maxPlayers: 4
+  Name: battleRoyale.data012
+  IngameData:
+    Setting:
+      graphic:
+        Graphic_val: 0
+        FrameRate_val: 0
+        GraphicStyle_val: 0
+        BrightnessSlider_val: 0
+      sound:
+        MasterVolumeSlider_val: 0
+        BackgroundMusicSlider_val: 0
+        VoiceChatSlider_val: 0
+        GameSFXSlider_val: 0
+      Control:
+        fireSetting:
+          AlwaysOn: 0
+          Scope: 0
+          BoltActionRifle: 0
+          ShotgunFiringMode: 0
+          SensitivitySetting: 0
+        TppnoScopeSlider_val: 0
+        RedDotSlider_val: 0
+        twoxScopeSlider_val: 0
+        ThreexScopeSlider_val: 0
+        FourxScopeSlider_val: 0
+        SixxScopeSlider_val: 0
+        CameraSensivitySlider_val: 0
+        CameraParachutingSlider_val: 0
+      CustomGamePlayControl:
+        CustomControlSelected: 0
+      gameplay:
+        autoPickHints: 0
+        autoPick: 0
+        Hints: 0
+  maxPlayers: 2
 --- !u!1 &1838279058
 GameObject:
   m_ObjectHideFlags: 0
@@ -2158,7 +2198,7 @@ MonoBehaviour:
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 1093037038611221156, guid: 0f2581f7327409740a9d7b373c07349b,
+  playerPrefab: {fileID: 7831596024408029599, guid: 610b65ce2859df343b1554ae106e5a85,
     type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0

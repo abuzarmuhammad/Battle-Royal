@@ -36,7 +36,7 @@ using UnityEngine.SceneManagement;
                 localPlayer = this;
                 DontDestroyOnLoad(gameObject);
                 Debug.LogWarning("Client Started");
-                Invoke(nameof(SearchGame),4);
+                //Invoke(nameof(SearchGame),4);
             } else {
                 Debug.Log ($"Spawning other player UI Prefab");
                 // playerLobbyUI = UILobby.instance.SpawnPlayerUIPrefab (this);
@@ -210,7 +210,7 @@ using UnityEngine.SceneManagement;
         void TargetPlayerCountUpdated (int playerCount) {
             if (playerCount >= DataHandler.Instance.maxPlayers) {
                 Debug.LogWarning("Room is full");
-                BeginGame();
+                // BeginGame();
             } else {
                 Debug.LogWarning("Waiting for Other players");
             }

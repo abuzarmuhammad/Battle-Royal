@@ -829,6 +829,7 @@ namespace Mirror
             // it will be re-enabled in FinishLoadScene.
             NetworkServer.isLoadingScene = true;
 
+            Debug.LogWarning("Loading Scene " + newSceneName);
             loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName);
 
             // ServerChangeScene can be called when stopping the server
