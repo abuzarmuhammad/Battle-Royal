@@ -896,7 +896,7 @@ MonoBehaviour:
   IsTransitioningToCustomState: 0
   IsTargetInForward: 0
   mCamera: {fileID: 9097376539375456531}
-  TargetToFollow: {fileID: 0}
+  TargetToFollow: {fileID: 6972773184622584798}
   CameraCollisionLayerMask:
     serializedVersion: 2
     m_Bits: 71681
@@ -1059,7 +1059,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &757571126739017705
 Transform:
   m_ObjectHideFlags: 0
@@ -2350,7 +2350,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6120664164616801976
 Transform:
   m_ObjectHideFlags: 0
@@ -3027,7 +3027,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4633785197111112923
 Transform:
   m_ObjectHideFlags: 0
@@ -4245,7 +4245,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1482512427583793410
 Transform:
   m_ObjectHideFlags: 0
@@ -11439,8 +11439,13 @@ MonoBehaviour:
     matchFull: 0
     maxPlayers: 0
     players: []
-  playerController: {fileID: 0}
-  cameraController: {fileID: 0}
+  meshes:
+  - {fileID: 3421912767108047924}
+  - {fileID: 4538856604444167245}
+  - {fileID: 1235721781525964602}
+  - {fileID: 8253248616137528332}
+  - {fileID: 5902368977584716590}
+  cameraController: {fileID: 1137936783105699091}
 --- !u!1 &7933935616693424357
 GameObject:
   m_ObjectHideFlags: 0
@@ -11575,7 +11580,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8854505676896065149
 Transform:
   m_ObjectHideFlags: 0

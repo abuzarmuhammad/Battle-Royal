@@ -17,8 +17,11 @@ using UnityEngine.SceneManagement;
 
         [SyncVar] public Match currentMatch;
 
-        [SerializeField] private GameObject playerController;
+        [SerializeField] private List<GameObject> meshes;
         [SerializeField] private GameObject cameraController;
+
+        
+        
         
         Guid netIDGuid;
 
@@ -36,15 +39,22 @@ using UnityEngine.SceneManagement;
                 localPlayer = this;
                 DontDestroyOnLoad(gameObject);
                 Debug.LogWarning("Client Started");
+                for (int i = 0; i < meshes.Count; i++)
+                {
+                    meshes[i].SetActive(true);
+                }
                 if (localPlayer.Equals(this))
                 {
-                    RepositionHandler.Instance.SwitchState(GameStateEnum.MAIN_MENU);
-                    RepositionHandler.Instance.SwitchPosition(transform);
+                    SwitchPosition(GameStateEnum.MAIN_MENU);
                 }
                 //Invoke(nameof(SearchGame),4);
             } else {
                 Debug.Log ($"Spawning other player UI Prefab");
                 gameObject.layer = LayerMask.NameToLayer ("OtherPlayer");
+                for (int i = 0; i < meshes.Count; i++)
+                {
+                    meshes[i].SetActive(false);
+                }
                 // playerLobbyUI = UILobby.instance.SpawnPlayerUIPrefab (this);
             }
         }
@@ -216,6 +226,8 @@ using UnityEngine.SceneManagement;
         void TargetPlayerCountUpdated (int playerCount) {
             if (playerCount >= DataHandler.Instance.maxPlayers) {
                 Debug.LogWarning("Room is full");
+                // Move Player To Lobby
+                UIMANAGER.Instance.OpenLoadingScreen();
                 // BeginGame();
             } else {
                 Debug.LogWarning("Waiting for Other players");
@@ -226,9 +238,34 @@ using UnityEngine.SceneManagement;
             BEGIN MATCH
         */
 
+        public void SetupForLobby()
+        {
+            SwitchPosition(GameStateEnum.LOBBY);
+            cameraController.SetActive(true);
+            cameraController.transform.SetParent(null);
+            for (int i = 0; i < meshes.Count; i++)
+            {
+                meshes[i].SetActive(true);
+            }
+            gameObject.layer = LayerMask.NameToLayer("Character");
+        }
+
+        [Command]
+        private void SwitchPosition(GameStateEnum _newState)
+        {
+            Debug.LogWarning("Trying to switch position");
+            RepositionHandler.Instance.SwitchPosition(_newState,this);
+        }        
         private void LoadLobbyScene()
         {
             SceneManager.LoadScene ("Lobby");
+        }
+
+        [TargetRpc]
+        public void RPC_SetPosition(Vector3 _newPosition,Vector3 _newRotation)
+        {
+            transform.position = _newPosition;
+            transform.eulerAngles = _newRotation;
         }
         
         public void BeginGame () {
@@ -253,10 +290,10 @@ using UnityEngine.SceneManagement;
         }
 
 
-        public void EnablePlayerController()
-        {
-            playerController.SetActive(true);
-            cameraController.SetActive(true);
-        }
+        // public void EnablePlayerController()
+        // {
+        //     playerController.SetActive(true);
+        //     cameraController.SetActive(true);
+        // }
         
     }

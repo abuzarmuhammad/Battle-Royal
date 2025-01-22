@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using MirrorBasics;
@@ -6,17 +7,10 @@ using UnityEngine.SceneManagement;
 
 public class SplashScreen : MonoBehaviour
 {
-    public AutoHostClient autoHostClient;
-    
+    public Action OnLoadingDone;
     public void LoadMainMenu()
     {
-        InvokeRepeating(nameof(TryToLoadMainMenu),0.1f,0.1f);
+        gameObject.SetActive(false);
+        OnLoadingDone?.Invoke();
     }
-    
-    private void TryToLoadMainMenu()
-    {
-        SceneManager.LoadSceneAsync("MainMenu");
-        CancelInvoke(nameof(TryToLoadMainMenu));
-    }
-    
 }

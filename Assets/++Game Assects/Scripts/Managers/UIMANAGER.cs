@@ -27,13 +27,21 @@ public class Panel
 
 public class UIMANAGER : MonoBehaviour
 {
+    public static UIMANAGER Instance;
+    
     [SerializeField] private List<Panel> allPanels;
+    [SerializeField] private GameObject LoadingScreen;
     
     
+    private SplashScreen _splashScreen;
     private Stack<Panel> _panelStack;
-
-    public bool IsClient;
     
+    private void Awake()
+    {
+        Instance = this;
+        _splashScreen = LoadingScreen.GetComponent<SplashScreen>();
+    }
+
     public void LoadGame()
     {
         SceneManager.LoadScene(2);
@@ -45,10 +53,8 @@ public class UIMANAGER : MonoBehaviour
         _panelStack.Push(allPanels.Find(x=>x._type==PanelType.MainMenu));
         EventManager.OnPanelOpenClicked += OpenPanel;
         EventManager.OnPanelCloseClicked += ClosePanel;
-        if(IsClient) 
-            NetworkManager.singleton.StartClient();
     }
-
+    
     private void OnDisable()
     {
         EventManager.OnPanelOpenClicked -= OpenPanel;
@@ -83,11 +89,21 @@ public class UIMANAGER : MonoBehaviour
     public void ConnectClient()
     {
         Debug.LogWarning("Connecting to Client");
-        // NetworkManager.singleton.StartClient();
+        Player.localPlayer.SearchGame();
     }
 
     private void OnConnectedToServer()
     {
         Debug.LogWarning("Connected To Server");
+    }
+
+    public void OpenLoadingScreen()
+    {
+        LoadingScreen.SetActive(true);
+        Player[] allplayers = FindObjectsOfType<Player>();
+        for (int i = 0; i < allplayers.Length; i++)
+        {
+            allplayers[i].SetupForLobby();
+        } 
     }
 }
