@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using JUTPS;
+using JUTPS.CameraSystems;
 
 namespace JUTPSActions
 {

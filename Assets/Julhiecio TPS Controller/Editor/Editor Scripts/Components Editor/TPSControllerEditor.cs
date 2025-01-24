@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using JUTPS.CameraSystems;
 using UnityEngine;
 using UnityEditor;
 
@@ -416,7 +417,8 @@ namespace JUTPS.CustomEditors
                 serializedObject.FindProperty(nameof(JUCharacter.PhysicalDamageMultiplier)).floatValue = EditorGUILayout.FloatField("  Physical Damage Multiplier", JUCharacter.PhysicalDamageMultiplier);
                 serializedObject.FindProperty(nameof(JUCharacter.RagdollStartAtDamage)).floatValue = EditorGUILayout.FloatField("  Ragdoll Start At Damage", JUCharacter.RagdollStartAtDamage);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(JUCharacter.PhysicalDamageIgnoreTags)));
-
+                EditorGUILayout.LabelField("Camera Controller", EditorStyles.boldLabel);
+                serializedObject.FindProperty(nameof(JUCharacter.MyPivotCamera)).objectReferenceValue = EditorGUILayout.ObjectField("Some Transform Property", JUCharacter.MyPivotCamera, typeof(JUCameraController), true);
                 EditorGUILayout.Space();
             }
         }

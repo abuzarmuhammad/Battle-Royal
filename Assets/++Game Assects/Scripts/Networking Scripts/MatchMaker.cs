@@ -51,7 +51,7 @@ using UnityEngine.SceneManagement;
                 Debug.Log ($"Match generated");
                 _player.currentMatch = match;
                 playerIndex = 1;
-                match.players[0].PlayerCountUpdated (match.players.Count);
+                // match.players[0].PlayerCountUpdated (match.players.Count);
                 // }
 
                 if (match.players.Count == match.maxPlayers) {
@@ -78,15 +78,15 @@ using UnityEngine.SceneManagement;
                             _player.currentMatch = matches[i];
                             playerIndex = matches[i].players.Count;
 
-                            // for (int j = 0; j < matches[i].players.Count; j++)
-                            // {
-                                matches[i].players[0].PlayerCountUpdated (matches[i].players.Count);
-                            // }
-
                             if (matches[i].players.Count == matches[i].maxPlayers) {
                                 matches[i].matchFull = true;
                                 Debug.LogWarning("Match Is FUll Loading New Scene");
-                                NetworkManagerBattleRoyale.singleton.ServerChangeScene("Lobby",matches[i].matchID);
+                                for (int j = 0; j < matches[i].players.Count; j++)
+                                {
+                                    // matches[i].players[i].PlayerCountUpdated (matches[i].players.Count);
+                                    matches[i].players[j].MatchFull();
+                                }
+                                //NetworkManagerBattleRoyale.singleton.ServerChangeScene("Lobby",matches[i].matchID);
                             }
                             
                             break;
@@ -179,7 +179,7 @@ using UnityEngine.SceneManagement;
                         matches.RemoveAt (i);
                         matchIDs.Remove (_matchID);
                     } else {
-                        matches[i].players[0].PlayerCountUpdated (matches[i].players.Count);
+                        //matches[i].players[0].PlayerCountUpdated (matches[i].players.Count);
                     }
                     break;
                 }

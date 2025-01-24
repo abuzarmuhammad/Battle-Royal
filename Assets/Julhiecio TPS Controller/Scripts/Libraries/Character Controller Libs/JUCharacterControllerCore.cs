@@ -10,13 +10,14 @@ using JUTPS.ActionScripts;
 using JUTPS.PhysicsScripts;
 using JUTPS.WeaponSystem;
 using JUTPS.CameraSystems;
+using Mirror;
 
 //using JU_INPUT_SYSTEM;
 
 namespace JUTPS.CharacterBrain
 {
 
-    public class JUCharacterBrain : MonoBehaviour
+    public class JUCharacterBrain : NetworkBehaviour
     {
         //ESSENTIALS
         [HideInInspector] public Vector3 UpDirection = Vector3.zero;
@@ -25,8 +26,8 @@ namespace JUTPS.CharacterBrain
         [HideInInspector] public Animator anim;
         [HideInInspector] public Rigidbody rb;
         [HideInInspector] public Collider coll;
-        protected Camera MyCamera;
-        [HideInInspector] public JUCameraController MyPivotCamera;
+        public Camera MyCamera;
+        public JUCameraController MyPivotCamera;
         [HideInInspector] private Quaternion lastDirectionTransformRotation;
 
         //ADDITIONALS
@@ -324,7 +325,7 @@ namespace JUTPS.CharacterBrain
             HoldableItemInUseRightHand = null;
 
             // Get Camera references
-            MyPivotCamera = (IsArtificialIntelligence == false) ? FindObjectOfType<JUCameraController>() : null;
+            // MyPivotCamera = (IsArtificialIntelligence == false) ? Player.localPlayer.cameraController.GetComponent<JUCameraController>() : null;
             MyCamera = (MyPivotCamera != null && IsArtificialIntelligence == false) ? MyPivotCamera.mCamera : null;
 
             // Get last character spine bone

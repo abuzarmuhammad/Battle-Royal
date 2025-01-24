@@ -3033,7 +3033,7 @@ GameObject:
   - component: {fileID: 8519737792813544049}
   - component: {fileID: 153377391228324312}
   m_Layer: 5
-  m_Name: Mobile Rig TPS
+  m_Name: Mobile Rig TPS 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

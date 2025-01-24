@@ -892,6 +892,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 393010f998c28fb459d51685134d7902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   Aiming: 0
   IsTransitioningToCustomState: 0
   IsTargetInForward: 0
@@ -10776,12 +10779,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be2f1b4d5da6234438ceca64fb2aa3f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   UpDirection: {x: 0, y: 0, z: 0}
   UpOrientation: {x: 0, y: 0, z: 0, w: 0}
   anim: {fileID: 3975643843838999352}
   rb: {fileID: 0}
   coll: {fileID: 0}
-  MyPivotCamera: {fileID: 0}
+  MyCamera: {fileID: 0}
+  MyPivotCamera: {fileID: 3000034800418853245}
   CharacterHealth: {fileID: 7780482362320426913}
   DriveVehicleAbility: {fileID: 0}
   Inventory: {fileID: 0}
@@ -11380,7 +11387,7 @@ MonoBehaviour:
   syncDirection: 1
   syncMode: 0
   syncInterval: 0
-  clientAuthority: 0
+  clientAuthority: 1
   animator: {fileID: 3975643843838999352}
 --- !u!114 &1238311614753248896
 MonoBehaviour:
@@ -11430,6 +11437,13 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  cameraController: {fileID: 1137936783105699091}
+  meshes:
+  - {fileID: 3421912767108047924}
+  - {fileID: 4538856604444167245}
+  - {fileID: 1235721781525964602}
+  - {fileID: 8253248616137528332}
+  - {fileID: 5902368977584716590}
   matchID: 
   playerIndex: 0
   currentMatch:
@@ -11439,13 +11453,6 @@ MonoBehaviour:
     matchFull: 0
     maxPlayers: 0
     players: []
-  meshes:
-  - {fileID: 3421912767108047924}
-  - {fileID: 4538856604444167245}
-  - {fileID: 1235721781525964602}
-  - {fileID: 8253248616137528332}
-  - {fileID: 5902368977584716590}
-  cameraController: {fileID: 1137936783105699091}
 --- !u!1 &7933935616693424357
 GameObject:
   m_ObjectHideFlags: 0

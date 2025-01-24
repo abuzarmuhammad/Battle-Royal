@@ -39,7 +39,8 @@ namespace JUTPS
         {
 			if (PlayerController == null)
 			{
-				GameObject playerGameObject = GameObject.FindGameObjectWithTag("Player");
+				// GameObject playerGameObject = GameObject.FindGameObjectWithTag("Player");
+				GameObject playerGameObject = Player.localPlayer.gameObject;
 				if (playerGameObject)
 				{
 					if (playerGameObject.TryGetComponent(out JUCharacterController tpsChar)) { return tpsChar; } else { return null; }

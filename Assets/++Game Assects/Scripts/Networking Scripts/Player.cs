@@ -10,6 +10,9 @@ using UnityEngine.SceneManagement;
     public class Player : NetworkBehaviour {
 
         public static Player localPlayer;
+        public GameObject cameraController;
+        [SerializeField] private List<GameObject> meshes;
+        
         [SyncVar] public string matchID;
         [SyncVar] public int playerIndex;
 
@@ -17,8 +20,6 @@ using UnityEngine.SceneManagement;
 
         [SyncVar] public Match currentMatch;
 
-        [SerializeField] private List<GameObject> meshes;
-        [SerializeField] private GameObject cameraController;
 
         
         
@@ -216,23 +217,30 @@ using UnityEngine.SceneManagement;
         /* 
             MATCH PLAYERS
         */
-
+        
         [Server]
-        public void PlayerCountUpdated (int playerCount) {
-            TargetPlayerCountUpdated (playerCount);
+        public void MatchFull()
+        {
+            RPC_MatchFull();
         }
 
         [TargetRpc]
-        void TargetPlayerCountUpdated (int playerCount) {
-            if (playerCount >= DataHandler.Instance.maxPlayers) {
-                Debug.LogWarning("Room is full");
-                // Move Player To Lobby
-                UIMANAGER.Instance.OpenLoadingScreen();
-                // BeginGame();
-            } else {
-                Debug.LogWarning("Waiting for Other players");
-            }
+        private void RPC_MatchFull()
+        {
+            UIMANAGER.Instance.OpenLoadingScreen();
         }
+        
+        // [TargetRpc]
+        // void TargetPlayerCountUpdated (int playerCount) {
+        //     if (playerCount >= DataHandler.Instance.maxPlayers) {
+        //         Debug.LogWarning("Room is full");
+        //         // Move Player To Lobby
+        //         UIMANAGER.Instance.OpenLoadingScreen();
+        //         // BeginGame();
+        //     } else {
+        //         Debug.LogWarning("Waiting for Other players");
+        //     }
+        // }
 
         /* 
             BEGIN MATCH
@@ -241,20 +249,48 @@ using UnityEngine.SceneManagement;
         public void SetupForLobby()
         {
             SwitchPosition(GameStateEnum.LOBBY);
-            cameraController.SetActive(true);
-            cameraController.transform.SetParent(null);
+            if (isLocalPlayer)
+            {
+                cameraController.SetActive(true);
+                cameraController.transform.SetParent(null);
+            }
             for (int i = 0; i < meshes.Count; i++)
             {
                 meshes[i].SetActive(true);
             }
             gameObject.layer = LayerMask.NameToLayer("Character");
+            GetComponent<Rigidbody>().useGravity = true;
+            UIMANAGER.Instance.OpenLobbyUI();
+            // CMD_SetupForLobby();
         }
 
+        // [Command]
+        // private void CMD_SetupForLobby()
+        // {
+        //     RPC_SetupForLobby();
+        // }
+        //
+        // [TargetRpc]
+        // private void RPC_SetupForLobby()
+        // {
+        //     for (int i = 0; i < meshes.Count; i++)
+        //     {
+        //         meshes[i].SetActive(true);
+        //     }
+        //     gameObject.layer = LayerMask.NameToLayer("Character");
+        // }
+        //
         [Command]
         private void SwitchPosition(GameStateEnum _newState)
         {
             Debug.LogWarning("Trying to switch position");
             RepositionHandler.Instance.SwitchPosition(_newState,this);
+            for (int i = 0; i < meshes.Count; i++)
+            {
+                meshes[i].SetActive(true);
+            }
+            gameObject.layer = LayerMask.NameToLayer("Character");
+            
         }        
         private void LoadLobbyScene()
         {

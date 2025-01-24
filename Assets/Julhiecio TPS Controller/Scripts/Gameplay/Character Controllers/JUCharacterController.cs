@@ -36,6 +36,8 @@ namespace JUTPS
         public string[] PhysicalDamageIgnoreTags = new string[] { "Player", "Enemy", "Bones", "Wall", "Bullet" };
         void FixedUpdate()
         {
+            if (!isLocalPlayer)
+                return;
             if (IsDead == true || DisableAllMove == true || JUPauseGame.IsPaused) { return; }
             Movement();
             SlopeSlide();
@@ -44,6 +46,8 @@ namespace JUTPS
 
         void Update()
         {
+            if (!isLocalPlayer)
+                return;
             if (JUPauseGame.IsPaused) return;
 
             FootPlacementIKController();
@@ -84,6 +88,8 @@ namespace JUTPS
         #region INPUTS
         public virtual void ControllerInputs()
         {
+            if (!isLocalPlayer)
+                return;
             if (UseDefaultControllerInput == false) return;
 
 
@@ -293,6 +299,8 @@ namespace JUTPS
         #region ANIMATOR
         protected virtual void SetupDefaultLayersWeights()
         {
+            if (!isLocalPlayer)
+                return;
             SetDefaultAnimatorsLayersWeight(AnimatorParameters, LegsLayerWeight, RightArmLayerWeight, LeftArmLayerWeight, BothArmsLayerWeight, WeaponSwitchLayerWeight);
 
             if (IsMeleeAttacking)
@@ -480,6 +488,8 @@ namespace JUTPS
         #region CONTROLLER LOCOMOTION
         protected virtual void Movement()
         {
+            if (!isLocalPlayer)
+                return;
             LocomotionModeController();
 
             //Ragdoll Controll
@@ -957,6 +967,8 @@ namespace JUTPS
 
         void OnAnimatorIK(int layerIndex)
         {
+            if (!isLocalPlayer)
+                return;
             if (IsDead || InverseKinematics == false) return;
 
             //Get Original Spine Rotation

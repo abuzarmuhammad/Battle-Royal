@@ -41,6 +41,10 @@ namespace JUTPS.CameraSystems
 		float ymouse;
 		protected override void Start()
 		{
+			if (isLocalPlayer)
+			{
+				TargetToFollow = Player.localPlayer.transform;
+			}
 			base.Start();
 			//Get JU Character Controller reference
 			if (TargetToFollow.TryGetComponent(out JUCharacterController JUcharacter)) { characterTarget = JUcharacter; TargetToFollow = characterTarget.HumanoidSpine; }
@@ -48,6 +52,8 @@ namespace JUTPS.CameraSystems
 		//Rotate camera and update camera states
 		protected virtual void Update()
 		{
+			if (!isLocalPlayer)
+				return;
 			SetRotationInput();
 
 			if (FollowUpTarget)
@@ -94,6 +100,8 @@ namespace JUTPS.CameraSystems
 		//Move camera pivot
 		protected virtual void FixedUpdate()
 		{
+			if(!isLocalPlayer)
+				return;
 			//SetPivotCameraPosition(GetCurrentCameraState.GetCameraPivotPosition(TargetToFollow), true);
 			if (characterTarget != null)
 			{

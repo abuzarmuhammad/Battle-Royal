@@ -30,7 +30,9 @@ public class UIMANAGER : MonoBehaviour
     public static UIMANAGER Instance;
     
     [SerializeField] private List<Panel> allPanels;
-    [SerializeField] private GameObject LoadingScreen;
+    [SerializeField] private GameObject loadingScreen;
+    [SerializeField] private GameObject mainMenu;
+    [SerializeField] private GameObject lobbyUI;
     
     
     private SplashScreen _splashScreen;
@@ -39,7 +41,7 @@ public class UIMANAGER : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        _splashScreen = LoadingScreen.GetComponent<SplashScreen>();
+        _splashScreen = loadingScreen.GetComponent<SplashScreen>();
     }
 
     public void LoadGame()
@@ -97,9 +99,15 @@ public class UIMANAGER : MonoBehaviour
         Debug.LogWarning("Connected To Server");
     }
 
+    public void OpenLobbyUI()
+    {
+        mainMenu.SetActive(false);
+        lobbyUI.SetActive(true);
+    }
+    
     public void OpenLoadingScreen()
     {
-        LoadingScreen.SetActive(true);
+        loadingScreen.SetActive(true);
         Player[] allplayers = FindObjectsOfType<Player>();
         for (int i = 0; i < allplayers.Length; i++)
         {

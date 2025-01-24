@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 //using JU_INPUT_SYSTEM;
 
@@ -90,7 +91,7 @@ namespace JUTPS.CameraSystems
 			this.VerticalIntensity = verticalIntensity;
 		}
 	}
-	public class JUCameraController : MonoBehaviour
+	public class JUCameraController : NetworkBehaviour
 	{
 		[HideInInspector] public bool Aiming;
 		[HideInInspector] public bool IsTransitioningToCustomState;
