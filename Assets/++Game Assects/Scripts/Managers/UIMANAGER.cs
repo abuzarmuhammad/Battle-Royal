@@ -104,6 +104,11 @@ public class UIMANAGER : MonoBehaviour
         mainMenu.SetActive(false);
         lobbyUI.SetActive(true);
     }
+
+    public void SetMaxPlayers(int _players)
+    {
+        DataHandler.Instance.maxPlayers = _players;
+    }
     
     public void OpenLoadingScreen()
     {

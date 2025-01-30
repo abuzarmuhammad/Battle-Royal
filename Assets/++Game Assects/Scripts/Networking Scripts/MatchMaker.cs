@@ -57,6 +57,12 @@ using UnityEngine.SceneManagement;
                 if (match.players.Count == match.maxPlayers) {
                     match.matchFull = true;
                     Debug.LogWarning("Match Is FUll Loading New Scene");
+                    for (int j = 0; j < match.players.Count; j++)
+                    {
+                        // matches[i].players[i].PlayerCountUpdated (matches[i].players.Count);
+                        match.players[j].MatchFull();
+                        match.inMatch = true;
+                    }
                     //NetworkManagerBattleRoyale.singleton.ServerChangeScene("Lobby",match.matchID);
                 }
                 return true;
@@ -85,6 +91,7 @@ using UnityEngine.SceneManagement;
                                 {
                                     // matches[i].players[i].PlayerCountUpdated (matches[i].players.Count);
                                     matches[i].players[j].MatchFull();
+                                    matches[i].inMatch = true;
                                 }
                                 //NetworkManagerBattleRoyale.singleton.ServerChangeScene("Lobby",matches[i].matchID);
                             }

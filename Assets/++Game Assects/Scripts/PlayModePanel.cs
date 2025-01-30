@@ -32,5 +32,11 @@ public class PlayModePanel : MonoBehaviour
             LeanTween.imageColor(toggleBg.GetComponent<RectTransform>(), grey, 0.2f);
         }
     }
+
+
+    public void SetPlayers(int players)
+    {
+        UIMANAGER.Instance.SetMaxPlayers(players);
+    }
     
 }
