@@ -91,7 +91,7 @@ namespace JUTPS.CameraSystems
 			this.VerticalIntensity = verticalIntensity;
 		}
 	}
-	public class JUCameraController : NetworkBehaviour
+	public class JUCameraController : MonoBehaviour
 	{
 		[HideInInspector] public bool Aiming;
 		[HideInInspector] public bool IsTransitioningToCustomState;

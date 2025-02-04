@@ -10,7 +10,6 @@ using UnityEngine.SceneManagement;
     public class Player : NetworkBehaviour {
 
         public static Player localPlayer;
-        public GameObject cameraController;
         [SerializeField] private List<GameObject> meshes;
         
         [SyncVar] public string matchID;
@@ -251,8 +250,6 @@ using UnityEngine.SceneManagement;
             SwitchPosition(GameStateEnum.LOBBY);
             if (isLocalPlayer)
             {
-                cameraController.SetActive(true);
-                cameraController.transform.SetParent(null);
             }
             for (int i = 0; i < meshes.Count; i++)
             {

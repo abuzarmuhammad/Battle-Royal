@@ -30,18 +30,17 @@ public class UIMANAGER : MonoBehaviour
     public static UIMANAGER Instance;
     
     [SerializeField] private List<Panel> allPanels;
-    [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject lobbyUI;
-    
-    
-    private SplashScreen _splashScreen;
+
+    [SerializeField] private GameObject _camera;
+
+
     private Stack<Panel> _panelStack;
     
     private void Awake()
     {
         Instance = this;
-        _splashScreen = loadingScreen.GetComponent<SplashScreen>();
     }
 
     public void LoadGame()
@@ -73,6 +72,7 @@ public class UIMANAGER : MonoBehaviour
         }
         panel._panelObject.SetActive(true);
         _panelStack.Push(panel);
+        Debug.LogWarning("Opening Panel " + _type);
         LeanTween.alphaCanvas(panel._panelObject.GetComponent<CanvasGroup>(), 1, 0.2f);
     }
 
@@ -103,6 +103,7 @@ public class UIMANAGER : MonoBehaviour
     {
         mainMenu.SetActive(false);
         lobbyUI.SetActive(true);
+        Instantiate(_camera);
     }
 
     public void SetMaxPlayers(int _players)
@@ -112,7 +113,6 @@ public class UIMANAGER : MonoBehaviour
     
     public void OpenLoadingScreen()
     {
-        loadingScreen.SetActive(true);
         Player[] allplayers = FindObjectsOfType<Player>();
         for (int i = 0; i < allplayers.Length; i++)
         {

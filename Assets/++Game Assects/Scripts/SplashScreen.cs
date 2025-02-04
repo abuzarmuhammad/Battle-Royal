@@ -7,10 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class SplashScreen : MonoBehaviour
 {
-    public Action OnLoadingDone;
     public void LoadMainMenu()
     {
         gameObject.SetActive(false);
-        OnLoadingDone?.Invoke();
+        Debug.LogWarning("Closing Loading Screen");
     }
 }
