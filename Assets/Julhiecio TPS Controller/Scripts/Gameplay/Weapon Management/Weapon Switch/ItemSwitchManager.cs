@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 using JUTPS.JUInputSystem;
 using JUTPS.InventorySystem;
-
+using JUTPS.WeaponSystem;
 using JUTPSEditor.JUHeader;
 
 namespace JUTPS.ItemSystem
@@ -18,7 +18,8 @@ namespace JUTPS.ItemSystem
         public bool IsPlayer;
         public bool UseOldInputSystem;
         [SerializeField] private JUCharacterController JuTPSCharacter;
-        public int ItemToEquipOnStart = -1;
+        //public int ItemToEquipOnStart = -1;
+        public Weapon WeaponToEquipAtStart;
 
 
         [JUHeader("Next-Previous Item Switch [Q-E]")]
@@ -65,7 +66,7 @@ namespace JUTPS.ItemSystem
 
         private void EquipStartItem()
         {
-            JuTPSCharacter.SwitchToItem(ItemToEquipOnStart);
+            JuTPSCharacter.SwitchToItem(WeaponToEquipAtStart.ItemSwitchID);
         }
         protected virtual void OldInput_ItemSwitchController()
         {

@@ -10254,7 +10254,7 @@ MonoBehaviour:
   IsPlayer: 1
   UseOldInputSystem: 0
   JuTPSCharacter: {fileID: 0}
-  ItemToEquipOnStart: -1
+  WeaponToEquipAtStart: {fileID: 4543440695977414578}
   EnableNextAndPreviousWeaponSwitch: 1
   CustomNextWeaponKeyCode: 270
   CustomPreviousWeaponKeycode: 269
