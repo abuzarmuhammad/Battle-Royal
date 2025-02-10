@@ -9,6 +9,8 @@ namespace MirrorBasics {
 
         [SerializeField] NetworkManager networkManager;
         [SerializeField] private bool serverBuild;
+        [SerializeField] private bool Host;
+        
         public bool isConnectedToServer;
         
         void Start () {
@@ -19,7 +21,14 @@ namespace MirrorBasics {
             }
             else
             {
-                networkManager.StartClient();
+                if (Host)
+                {
+                    networkManager.StartHost();
+                }
+                else
+                {
+                    networkManager.StartClient();
+                }
             }
         }
     }

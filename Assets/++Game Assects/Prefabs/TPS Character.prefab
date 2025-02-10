@@ -9928,6 +9928,7 @@ GameObject:
   - component: {fileID: 1238311614753248896}
   - component: {fileID: 8848321394555606887}
   - component: {fileID: 2731452194864627664}
+  - component: {fileID: 5789234460480572918}
   m_Layer: 9
   m_Name: TPS Character
   m_TagString: Player
@@ -11128,6 +11129,18 @@ MonoBehaviour:
     matchFull: 0
     maxPlayers: 0
     players: []
+--- !u!114 &5789234460480572918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7831596024408029599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90136bb80f8027d48b038abfa65c9f3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7933935616693424357
 GameObject:
   m_ObjectHideFlags: 0

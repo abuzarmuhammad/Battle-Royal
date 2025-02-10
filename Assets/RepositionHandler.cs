@@ -55,7 +55,6 @@ public class RepositionHandler : NetworkBehaviour
             int randomNumber = UnityEngine.Random.Range(0, newPositions.Count);
             Vector3 newPosition = newPositions[randomNumber].position;
             Vector3 newRotation = newPositions[randomNumber].eulerAngles;
-            newPositions.RemoveAt(randomNumber);
             _player.RPC_SetPosition(newPosition,newRotation);
         }
     }

@@ -90,6 +90,8 @@ namespace JUTPS.WeaponSystem
 
 		protected override void Start()
 		{
+			// if (!isLocalPlayer)
+			// 	return;
 			base.Start();
 
 			CurrentFireRateToShoot = Fire_Rate - 0.05f;
@@ -141,6 +143,8 @@ namespace JUTPS.WeaponSystem
 		}
 		public override void Update()
 		{
+			// if (!isLocalPlayer)
+			// 	return;
 			WeaponControl();
 
 			if (GenerateProceduralAnimation == false) return;
@@ -216,6 +220,8 @@ namespace JUTPS.WeaponSystem
 		// >>> Actions
 		public override void UseItem()
 		{
+			// if (!isLocalPlayer)
+			// 	return;
 			// >>> FireModes
 			if (CanUseItem && BulletsAmounts > 0)
 			{

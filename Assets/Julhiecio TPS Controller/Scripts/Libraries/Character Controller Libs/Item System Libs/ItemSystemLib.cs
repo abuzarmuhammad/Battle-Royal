@@ -7,6 +7,7 @@ using JUTPS.WeaponSystem;
 using JUTPS.CameraSystems;
 
 using JUTPSEditor.JUHeader;
+using Mirror;
 
 namespace JUTPS.ItemSystem
 {

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using JUTPS.JUInputSystem;
@@ -6,9 +7,7 @@ using JUTPS.CrossPlataform;
 using JUTPS.ActionScripts;
 using JUTPS.VehicleSystem;
 using System.Xml.Schema;
-
-
-
+using UnityEngine.UI;
 
 
 #if UNITY_EDITOR
@@ -41,6 +40,12 @@ namespace JUTPS.CrossPlataform
         [SerializeField]
         private ButtonVirtual AimingButton, ReloadButton, RunButton, RunButtonRight, JumpButton,
         CrouchButton, RollButton, PickItemButton, EnterVehicleButton, NextWeaponButton, PreviousWeaponButton, RightButton, LeftButton, ForwardButton, BackButton, BrakeButton;
+
+        [SerializeField] private Button bagButton;
+        [SerializeField] private Button lootUICloseButton;
+        [SerializeField] private LootBoxUI lootBoxUI;
+        
+        
         public void FindButtonsAndTouches()
         {
             //Screen Panels
@@ -78,6 +83,30 @@ namespace JUTPS.CrossPlataform
             BackButton = GameObject.Find("BackButton").GetComponent<ButtonVirtual>();
             BrakeButton = GameObject.Find("BrakeButton").GetComponent<ButtonVirtual>();
         }
+
+        private void Start()
+        {
+            EventManager.OnEnterTrigger_LootBox += OnEnterTriggerLootBox;
+            bagButton.onClick.AddListener(ActivateLootBoxUI);
+            lootUICloseButton.onClick.AddListener(DeactivateLootBoxUI);
+        }
+
+        private void ActivateLootBoxUI()
+        {
+            lootBoxUI.Activate();
+        }
+
+        public void DeactivateLootBoxUI()
+        {
+            lootBoxUI.Deactivate();
+        }
+        
+        private void OnEnterTriggerLootBox(bool entered)
+        {
+            bagButton.gameObject.SetActive(entered);
+            DeactivateLootBoxUI();
+        }
+
         private void Update()
         {
             if (JUGameManager.IsMobileControls)

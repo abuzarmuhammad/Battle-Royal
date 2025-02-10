@@ -16,6 +16,7 @@ TagManager:
   - Enemy
   - Distractable
   - CoverTrigger
+  - Lootbox
   layers:
   - Default
   - TransparentFX
